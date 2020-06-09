@@ -7,9 +7,11 @@ function afficherlivraison ($livraison){
 		echo "cin_livreur: ".$livraison->getlivreur()."<br>";
 		echo "date_livraison: ".$livraison->getdate_livraison()."<br>";
 		echo "total_livraison: ".$livraison->gettotal()."<br>";
+		echo "etat: ".$livraison->getetat()."<br>";
+		
 	}
 	function ajouterlivraison($livraison){
-		$sql="insert into detail_livraison (id_livraison,id_commande,cin_livreur,date_livraison,total_livraison) values ( :id_livraison,:id_commande,:cin_livreur,:date_livraison,:total_livraison)";
+		$sql="insert into livraison (id_livraison,id_commande,cin_livreur,date_livraison,total_livraison,etat) values ( :id_livraison,:id_commande,:cin_livreur,:date_livraison,:total_livraison,:etat)";
 		$db = config::getConnexion();
 		try{
         $req=$db->prepare($sql);
@@ -19,7 +21,7 @@ function afficherlivraison ($livraison){
 		$cin_livreur=$livraison->getlivreur();
 		$date_livraison=$livraison->getdate_livraison();
 		$total_livraison=$livraison->gettotal();
-		
+		$etat=$livraison->getetat();
 	
 
 		$req->bindValue(':id_livraison',$id_livraison);
@@ -27,6 +29,7 @@ function afficherlivraison ($livraison){
 		$req->bindValue(':cin_livreur',$cin_livreur);
         $req->bindValue(':date_livraison',$date_livraison);
 		$req->bindValue(':total_livraison',$total_livraison);
+		$req->bindValue(':etat',$etat);
 	
 
 	
@@ -78,7 +81,7 @@ function afficherlivraison ($livraison){
         }
 	}
 	function modifierlivraison($livraison,$id_livraison){
-		$sql="UPDATE detail_livraison SET id_livraison=:id_livraison, id_commande=:id_commande,cin_livreur=:cin_livreur,date_livraison=:date_livraison,total_livraison=:total_livraison WHERE id_livraison=:id_livraison";
+		$sql="UPDATE detail_livraison SET id_livraison=:id_livraison, id_commande=:id_commande,cin_livreur=:cin_livreur,date_livraison=:date_livraison,total_livraison=:total_livraison,etat=:etat WHERE id_livraison=:id_livraison";
 		
 		$db = config::getConnexion();
 		//$db->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
@@ -89,12 +92,14 @@ try{
 		$cin_livreur=$livraison->getlivreur();
 		$date_livraison=$livraison->getdate_livraison();
 		$total_livraison=$livraison->gettotal();
+		$etat=$livraison->getetat();
        
 		$req->bindValue(':id_livraison',$id_livraison);
 		$req->bindValue(':id_commande',$id_commande);
 		$req->bindValue(':cin_livreur',$cin_livreur);
         $req->bindValue(':date_livraison',$date_livraison);
 		$req->bindValue(':total_livraison',$total_livraison);
+		$req->bindValue(':etat',$etat);
 	
             $s=$req->execute();
 			
