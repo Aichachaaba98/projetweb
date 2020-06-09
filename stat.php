@@ -1,20 +1,36 @@
 <?PHP
-include "../Cores/carteC.php";
-session_start ();  
- 
-// On récupère nos variables de session
-if (isset($_SESSION['l']) && isset($_SESSION['p'])) 
-{
+include "../Core/bazart.php";
+$categ1 = new categC();
+
+/*
+$db = config::getConnexion(); //appel fonction static sans new
+$liv = $db->query("select COUNT(*) from carte")->fetchColumn();
+ //var_dump($listelivreurs->fetchAll());
+
+$reqq1= $db->query(" SELECT COUNT(*) points  from carte ");
+$nbb1 = $reqq1->fetch();
+$reqq2= $db->query(" SELECT COUNT(*)login from carte where ");
+$nbb2 = $reqq2->fetch();
 
 
+$dataPoints = array(
+    array("label"=> "Points", "y"=> intval($nbb1['points'])),
+    array("label"=> "Login",  "x"=> intval($nbb2['login'])),
+);*/
 $connect = mysqli_connect("localhost", "root", "", "bazart");
-$query = "SELECT * FROM carte";
+$query = "SELECT *,COUNT(*) as v from produit  group by id_categorie";
 $result = mysqli_query($connect, $query);
 $chart_data = '';
 while($row = mysqli_fetch_array($result))
+
 {
- $chart_data .= "{ login:'".$row["login"]."', points:".$row["points"]."}, ";
-}
+ 
+$listecateg = $categ1->recuperercategorie($row['id_categorie']);
+foreach ($listecateg as $cat) {
+    
+
+ $chart_data .= "{ categorie:'".$cat["nom"]."', v:".$row["v"]."}, ";
+}}
 $chart_data = substr($chart_data, 0, -2);
 
 ?>
@@ -30,13 +46,12 @@ $chart_data = substr($chart_data, 0, -2);
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <title>Baz'art</title>
+    <title>bazart</title>
+    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Mobile Specific Meta-->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <!-- Favicon -->
-  <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
+    <link rel="apple-touch-icon" href="apple-icon.png">
+    <link rel="shortcut icon" href="favicon.ico">
 
 
     <link rel="stylesheet" href="vendors/bootstrap/dist/css/bootstrap.min.css">
@@ -51,9 +66,9 @@ $chart_data = substr($chart_data, 0, -2);
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
- 
+  
     <script>
-       
+        
   window.onload = function () {
    
 
@@ -62,11 +77,11 @@ $chart_data = substr($chart_data, 0, -2);
                 exportEnabled: true,
                 theme: "light2", // "light1", "light2", "dark1", "dark2"
                 title: {
-                    text: "Statistiques des points des cartes de fidélité  "
+                    text: "statistique de Nombre des produits selon leurs categories  "
                 },
                
                 axisY: {
-                    title: "Points",
+                    title: "Nombre de produit",
                     includeZero: false,
                 },
                 data: [{
@@ -78,7 +93,7 @@ $chart_data = substr($chart_data, 0, -2);
 
         }
     </script>
-   
+    
 
 
    
@@ -87,14 +102,14 @@ $chart_data = substr($chart_data, 0, -2);
 <body>
     <!-- Left Panel -->
 
-    <aside id="left-panel" class="left-panel">
+<aside id="left-panel" class="left-panel">
         <nav class="navbar navbar-expand-sm navbar-default">
 
             <div class="navbar-header">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="./"><img style="padding: 20px" src="images/logobazart.png" alt="Logo"></a>
+                <a class="navbar-brand" href="./"><img style="padding: 20px" src="logo.png" alt="Logo"></a>
             </div>
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
@@ -103,33 +118,73 @@ $chart_data = substr($chart_data, 0, -2);
                         <a href="index.php"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
                     </li>
                     <h3 class="menu-title">UI elements</h3><!-- /.menu-title -->
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Client</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><a href="ajouterclient2.php">Ajouter un client</a></li>
-                            <li><a href="afficherclient.php">Afficher liste des clients</a></li>
-                            <li><a href="modifierclient3.php">Modifier un client</a></li>
-                        </ul>
-                     </li>
-                     <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Cartes de fidélité</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><a href="ajoutercarte3.php">Ajouter une carte</a></li>
-                            <li><a href="affichercarte.php">Afficher les cartes</a></li>
-                            <li><a href="modifiercarte3.php">Modifier une carte</a></li>
-                            <li><a href="stat.php">Statistiques</a></li>
+                    
 
+                       
+                <li ><a href=""> <i class="menu-icon fa fa-table"></i>gestion clients</a>       </li>
+                       
+                <li ><a href="afficherlisteproduit.php"> <i class="menu-icon fa fa-table"></i>gestion des commandes</a>       </li>
+                                    </li>          
+                      
+
+                   
+                           
+               <ul class="nav navbar-nav">
+                    <li class="menu-item-has-children dropdown">
+
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       <i class="menu-icon fa fa-table"></i>gestion produits
+                     </a>
+
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-table"></i><a href="menuP.html">Produits</a></li>
+                             
+
+                            
+
+                            <li><i class="fa fa-table"></i><a href="menuC.html">Catégories </a></li>
+                            
+                         </ul>
+                   
+                   
+                   
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Gestion livraison</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-table"></i><a href="a.php">livraison</a></li>
+                            <li><i class="fa fa-table"></i><a href="c.php">livreurs</a></li>
+                           
                         </ul>
                     </li>
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Admins</a>
+                   
+                    </li>
+                    
+                         <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>gestion Réclamation</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><a href="ajouteradmin2.php">Ajouter un admin</a></li>
-                            <li><a href="afficheradmin.php">Afficher les admins</a></li>
+                            <li><i class="fa fa-table"></i><a href="addPublicite.html">les réclamations</a></li>
+                            <li><i class="fa fa-table"></i><a href="updatePub.php">les avis</a></li>
+                           
+                        </ul>
+                    </li>
+      
+      </li>
+                    
+                         <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>gestion promotions</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-table"></i><a href="addPublicite.html">Nos promotions</a></li>
+                            <li><i class="fa fa-table"></i><a href="updatePub.php">les offres</a></li>
+                           
                         </ul>
                     </li>
 
+                   
+                   
+                   
                 </ul>
+                
+                
             </div><!-- /.navbar-collapse -->
         </nav>
     </aside>
@@ -233,11 +288,11 @@ $chart_data = substr($chart_data, 0, -2);
                         <div class="user-menu dropdown-menu">
                             <a class="nav-link" href="#"><i class="fa fa-user"></i> My Profile</a>
 
-                        
+                            <a class="nav-link" href="#"><i class="fa fa-user"></i> Notifications <span class="count">13</span></a>
 
                             <a class="nav-link" href="#"><i class="fa fa-cog"></i> Settings</a>
 
-                            <a class="nav-link" href="logout.php"><i class="fa fa-power-off"></i> Logout</a>
+                            <a class="nav-link" href="#"><i class="fa fa-power-off"></i> Logout</a>
                         </div>
                     </div>
 
@@ -273,7 +328,7 @@ $chart_data = substr($chart_data, 0, -2);
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>livreurs</h1>
+                        <h1>produits</h1>
                     </div>
                 </div>
             </div>
@@ -281,23 +336,23 @@ $chart_data = substr($chart_data, 0, -2);
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                           
+                            
                             <li><a href="#">Table</a></li>
-                            <li class="active">Cartes</li>
+                            <li class="active">produits</li>
                         </ol>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="content mt-3">
+         <div class="content mt-3">
             <div class="animated fadeIn">
                 <div class="row">
 
 
                      <div class="container" style="width:900px;">
    <h2 align="center">Voici nos statistiques</h2>
-   <h3 align="center">statistiques des points des cartes selon leurs login </h3>  
+   <h3 align="center">statistiques des produits selon leurs catégories </h3>   
    <br /><br />
    <div id="chart"></div>
   </div>
@@ -306,6 +361,7 @@ $chart_data = substr($chart_data, 0, -2);
                 </div>
             </div><!-- .animated -->
         </div><!-- .content -->
+
 
 
     </div><!-- /#right-panel -->
@@ -341,21 +397,14 @@ $chart_data = substr($chart_data, 0, -2);
 
 <script>
 Morris.Bar({
+
  element : 'chart',
  data:[<?php echo $chart_data; ?>],
- xkey:'login',
- ykeys:['points'],
- labels:['Points'],
+ xkey:'categorie',
+ ykeys:[ 'v'],
+ labels:['nombre de produits' ],
  hideHover:'auto',
- stacked:true
+ stacked:true,
+ 
 });
 </script>
-
-<<?php 
-}
-else { 
-      echo 'Veuillez vous connecter </br>';  
-      echo '<a href="../../Bazart/themes/aviato-free/loginadmin.html">Cliquer pour se connecter</a>';
-
-} 
- ?>

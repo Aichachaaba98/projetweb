@@ -1,15 +1,15 @@
-<?PHP
-
+<?php
 include "../core/bazart.php";
 
 
+if (isset($_GET['id_produit'])){
 
-
+$pro1 = new prodC();
+$listeprod = $pro1->recupererproduit($_GET['id_produit']);
 
 
 
 ?>
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -50,7 +50,6 @@ include "../core/bazart.php";
 </head>
 
 <body id="body">
-
 <!-- Start Top Header Bar -->
 <section class="top-header">
 	<div class="container">
@@ -95,7 +94,7 @@ include "../core/bazart.php";
                               <span>1 x</span>
                               <span>1250.00</span>
                             </div>
-                            <h5><strong>120.000 TND</strong></h5>
+                            <h5><strong>$1200</strong></h5>
 	            		</div>
                         <a href="#" class="remove"><i class="tf-ion-close"></i></a>
 	            	</div><!-- / Cart Item -->
@@ -294,99 +293,250 @@ include "../core/bazart.php";
 	    </div><!-- / .container -->
 	</nav>
 </section>
-
-<section class="page-header">
+<section class="single-product">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
-				<div class="content">
-					<h1 class="page-name">Shop</h1>
-					<select  class="form-control" onchange="window.location.href = this.value">
-						<option disabled selected value>select categorie</option>
-                      <?PHP
-                      $categ1 = new categC();
-                      $listecateg = $categ1->affichercategorie();
-          foreach($listecateg as $cat){
-          ?> 
-                      <option value="shop.php?id_categorie=<?php echo $cat['id_categorie']; ?>" > <?php echo $cat['nom']; ?> </option>
-                     <?php } ?>
-            
-                  </select>
-					<ol class="breadcrumb">
-						<li><a href="#">Home</a></li>
-						<li class="active">shop</li>
-					</ol>
-				</div>
+			<div class="col-md-6">
+				<ol class="breadcrumb">
+					<li><a href="#">Home</a></li>
+					<li><a href="#">Shop</a></li>
+					<li class="active">Single Product</li>
+				</ol>
+			</div>
+			<div class="col-md-6">
+				<ol class="product-pagination text-right">
+					<li><a href="#"><i class="tf-ion-ios-arrow-left"></i> Next </a></li>
+					<li><a href="#">Preview <i class="tf-ion-ios-arrow-right"></i></a></li>
+				</ol>
 			</div>
 		</div>
-	</div>
-</section>
-
-
-<section class="products section">
-
-	<div class="container">
-
-		<div class="row">
-
-			<?PHP
-
-			$pro1 = new prodC();
-if(isset($_GET['id_categorie'])){
-	$listeprod=$pro1->afficherproduit_selon_categorie($_GET['id_categorie']);}
-else{
-$listeprod = $pro1->afficherproduit();
- }
+		<?PHP
           foreach($listeprod as $row){
           ?>
-			
-			<div class="col-md-4">
+		<div class="row mt-20">
+			<div class="col-md-5">
+				<div class="single-product-slider">
+					<div id='carousel-custom' class='carousel slide' data-ride='carousel'>
+						<div class='carousel-outer'>
+							<!-- me art lab slider -->
+							<div class='carousel-inner '>
+								<div class='item active'>
+									<img  src="<?php echo $row['lienimage']; ?>" alt='' data-zoom-image="<?php echo $row['lienimage']; ?>" />
+								</div>
+								
+								
+							</div>
+							
+							<!-- sag sol -->
+							<a class='left carousel-control' href='#carousel-custom' data-slide='prev'>
+								<i class="tf-ion-ios-arrow-left"></i>
+							</a>
+							<a class='right carousel-control' href='#carousel-custom' data-slide='next'>
+								<i class="tf-ion-ios-arrow-right"></i>
+							</a>
+						</div>
+						
+						<!-- thumb -->
+						
+						<ol class='carousel-indicators mCustomScrollbar meartlab'>
 
-				<div class="product-item">
-					
-					<div class="product-thumb">
-
-						<span class="bage">Sale</span>
-						<img  class="img-responsive" src="<?php echo $row['lienimage']; ?>" />
-						<div class="preview-meta">
-							<ul>
-								<li>
-									<span  data-toggle="modal" data-target="#product-modal">
-									<a href="product-single.php?id_produit=<?php echo $row['id_produit'] ?>">	<i class="tf-ion-ios-search-strong"></i></a>
-									</span>
-								</li>
-								<li>
-			                        <a href="#" ><i class="tf-ion-ios-heart"></i></a>
-								</li>
-								<li>
-									<a href=""><i class="tf-ion-android-cart"></i></a>
-								</li>
-							</ul>
-                      	</div>
-					</div>
-					<div class="product-content">
-						<h4><a href="product-single.php?id_produit=<?php echo $row['id_produit'] ?>"><?php echo $row['nom']; ?></a></h4>
-						<p class="price"><?php echo $row['prix']; ?>DT</p>
+							<li data-target='#carousel-custom' data-slide-to='0' class='active'>
+								<img  src="<?php echo $row['lienimage']; ?>" />
+							</li>
+							
+						</ol>
 					</div>
 				</div>
 			</div>
-		
-	        			    	<?PHP 
-        }
-        ?>
-		
-		
-		
-		
+			<div class="col-md-7">
+				<div class="single-product-details">
+					<h2><?php echo $row['nom']; ?></h2>
+					<p class="product-price"><?php echo $row['prix']; ?>DT</p>
+					
+					<p class="product-description mt-20">
+						<?php echo $row['description']; ?>
+					</p>
+					
+					<div class="color-swatches">
+						<span>color:</span>
+						<ul>
+							<li>
+								<a href="" class="swatch-violet"></a>
+							</li>
+							<li>
+								<a href="" class="swatch-black"></a>
+							</li>
+							<li>
+								<a href="" class="swatch-cream"></a>
+							</li>
+						</ul>
+					</div>
+					<div class="product-size">
+						<span>Size:</span>
+						<select class="form-control">
+							<option>S</option>
+							<option>M</option>
+							<option>L</option>
+							<option>XL</option>
+						</select>
+					</div>
+					<div class="product-quantity">
+						<span>Quantity:</span>
+						<div class="product-quantity-slider">
+							<input id="product-quantity" type="text" value="0" name="product-quantity">
+						</div>
+					</div>
+					<div class="product-category">
+						<span>Categories:</span> 
+
+					<?php	$categ1 = new categC();
+                        $listecateg = $categ1->recuperercategorie($row['id_categorie']);
+
+                        foreach ($listecateg as $cat) {
+                        
+                    ?>
+						<ul>
+							
+							<li><a href="shop.php?id_categorie=<?php  echo $cat['id_categorie']; ?>"><?php echo $cat['nom']; ?></a></li>
+							<?php } ?>
+						</ul>
+
+					</div>
+					<a href="cart.html" class="btn btn-main mt-20">Add To Cart</a>
+				</div>
+			</div>
+
 		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="tabCommon mt-20">
+					<ul class="nav nav-tabs">
+						
+						<li class=""><a data-toggle="tab" href="#reviews" aria-expanded="false">Reviews (3)</a></li>
+					</ul>
+					<div class="tab-content patternbg">
+						
+						<div id="reviews" class="tab-pane fade">
+							<div class="post-comments">
+						    	<ul class="media-list comments-list m-bot-50 clearlist">
+								    <!-- Comment Item start-->
+								    <li class="media">
 
+								        <a class="pull-left" href="#">
+								            <img class="media-object comment-avatar" src="images/blog/avater-1.jpg" alt="" width="50" height="50" />
+								        </a>
+
+								        <div class="media-body">
+								            <div class="comment-info">
+								                <h4 class="comment-author">
+								                    <a href="#">Jonathon Andrew</a>
+								                	
+								                </h4>
+								                <time datetime="2013-04-06T13:53">July 02, 2015, at 11:34</time>
+								                <a class="comment-button" href="#"><i class="tf-ion-chatbubbles"></i>Reply</a>
+								            </div>
+
+								            <p>
+								                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at magna ut ante eleifend eleifend.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod laborum minima, reprehenderit laboriosam officiis praesentium? Impedit minus provident assumenda quae.
+								            </p>
+								        </div>
+
+								    </li>
+								    <!-- End Comment Item -->
+
+								    <!-- Comment Item start-->
+								    <li class="media">
+
+								        <a class="pull-left" href="#">
+								            <img class="media-object comment-avatar" src="images/blog/avater-4.jpg" alt="" width="50" height="50" />
+								        </a>
+
+								        <div class="media-body">
+
+								            <div class="comment-info">
+								                <div class="comment-author">
+								                    <a href="#">Jonathon Andrew</a>
+								                </div>
+								                <time datetime="2013-04-06T13:53">July 02, 2015, at 11:34</time>
+								                <a class="comment-button" href="#"><i class="tf-ion-chatbubbles"></i>Reply</a>
+								            </div>
+
+								            <p>
+								                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at magna ut ante eleifend eleifend. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni natus, nostrum iste non delectus atque ab a accusantium optio, dolor!
+								            </p>
+
+								        </div>
+
+								    </li>
+								    <!-- End Comment Item -->
+
+								    <!-- Comment Item start-->
+								    <li class="media">
+
+								        <a class="pull-left" href="#">
+								            <img class="media-object comment-avatar" src="images/blog/avater-1.jpg" alt="" width="50" height="50">
+								        </a>
+
+								        <div class="media-body">
+
+								            <div class="comment-info">
+								                <div class="comment-author">
+								                    <a href="#">Jonathon Andrew</a>
+								                </div>
+								                <time datetime="2013-04-06T13:53">July 02, 2015, at 11:34</time>
+								                <a class="comment-button" href="#"><i class="tf-ion-chatbubbles"></i>Reply</a>
+								            </div>
+
+								            <p>
+								                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque at magna ut ante eleifend eleifend.
+								            </p>
+
+								        </div>
+
+								    </li>
+							</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-
 </section>
 
 
 
 
+<!-- Modal -->
+<div class="modal product-modal fade" id="product-modal">
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		<i class="tf-ion-close"></i>
+	</button>
+  	<div class="modal-dialog " role="document">
+    	<div class="modal-content">
+	      	<div class="modal-body">
+	        	<div class="row">
+	        		<div class="col-md-8">
+	        			<div class="modal-image">
+		        			<img class="img-responsive" src="images/shop/products/modal-product.jpg" />
+	        			</div>
+	        		</div>
+	        		<div class="col-md-3">
+	        			<div class="product-short-details">
+	        				<h2 class="product-title">GM Pendant, Basalt Grey</h2>
+	        				<p class="product-price">$200</p>
+	        				<p class="product-short-description">
+	        					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem iusto nihil cum. Illo laborum numquam rem aut officia dicta cumque.
+	        				</p>
+	        				<a href="" class="btn btn-main">Add To Cart</a>
+	        				<a href="" class="btn btn-transparent">View Product Details</a>
+	        			</div>
+	        		</div>
+	        	</div>
+	        </div>
+    	</div>
+  	</div>
+</div>
 <footer class="footer section text-center">
 	<div class="container">
 		<div class="row">
@@ -432,8 +582,10 @@ $listeprod = $pro1->afficherproduit();
 		</div>
 	</div>
 </footer>
-
-    <!-- 
+    	
+	        			    	<?PHP 
+        }}
+        ?><!-- 
     Essential Scripts
     =====================================-->
     
@@ -480,7 +632,3 @@ $listeprod = $pro1->afficherproduit();
 
   </body>
   </html>
-
-
-
-
