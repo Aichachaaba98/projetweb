@@ -58,7 +58,7 @@ if (isset($_GET['id_carte'])){
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li class="active">
-                        <a href="index.php"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
+                        <a href="index.html"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
                     </li>
                     <h3 class="menu-title">UI elements</h3><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
@@ -77,13 +77,6 @@ if (isset($_GET['id_carte'])){
                             <li><a href="modifiercarte3.php">Modifier une carte</a></li>
                             <li><a href="stat.php">Statistiques</a></li>
 
-                        </ul>
-                    </li>
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Admins</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><a href="ajouteradmin2.php">Ajouter un admin</a></li>
-                            <li><a href="afficheradmin.php">Afficher les admins</a></li>
                         </ul>
                     </li>
 
@@ -191,7 +184,7 @@ if (isset($_GET['id_carte'])){
                         <div class="user-menu dropdown-menu">
                             <a class="nav-link" href="#"><i class="fa fa-user"></i> My Profile</a>
 
-                          
+                            <a class="nav-link" href="#"><i class="fa fa-user"></i> Notifications <span class="count">13</span></a>
 
                             <a class="nav-link" href="#"><i class="fa fa-cog"></i> Settings</a>
 

@@ -1,9 +1,14 @@
 <?PHP
-include "../Cores/clientC.php";
-$client1C=new clientC();
-$list=$client1C->afficherclients();
-
-//var_dump($listeEmployes->fetchAll());
+include "../entities/SAV.php";
+include "../cores/SAVC.php";
+if (isset($_GET['id_rec'])){
+	$reclamationC=new reclamationC();
+    $result=$reclamationC->recupererreclamation($_GET['id_rec']);
+	foreach($result as $row){
+		$id_rec=$row['id_rec'];
+		$nature=$row['nature'];
+		$description=$row['description'];
+		
 ?>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
@@ -16,12 +21,12 @@ $list=$client1C->afficherclients();
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Baz'art</title>
+    <title>Makhla</title>
     <meta name="description" content="Sufee Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="apple-touch-icon" href="apple-icon.png">
-    <link rel="shortcut icon" href="favicon.png">
+    <link rel="shortcut icon" href="favicon.ico">
 
 
     <link rel="stylesheet" href="vendors/bootstrap/dist/css/bootstrap.min.css">
@@ -40,14 +45,15 @@ $list=$client1C->afficherclients();
 <body>
     <!-- Left Panel -->
 
-        <aside id="left-panel" class="left-panel">
+    <aside id="left-panel" class="left-panel">
         <nav class="navbar navbar-expand-sm navbar-default">
 
             <div class="navbar-header">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                 <a class="navbar-brand" href="./"><img style="padding: 20px" src="images/logobazart.png" alt="Logo"></a>
+                <a class="navbar-brand" href="./"><img src="images/bazart.png" alt="Logo"></a>
+                <a class="navbar-brand hidden" href="./"><img src="images/bazart.png" alt="Logo"></a>
             </div>
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
@@ -56,34 +62,69 @@ $list=$client1C->afficherclients();
                         <a href="index.html"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
                     </li>
                     <h3 class="menu-title">UI elements</h3><!-- /.menu-title -->
+                    
+
+                       
+                <li ><a href="affichercommandes2.php"> <i class="menu-icon fa fa-table"></i>Liste des commandes en cours</a>                    </li>
+                <li ><a href="historique2.php"> <i class="menu-icon fa fa-table"></i>Historique des commandes</a>                    </li>                <li ><a href="stat.php"> <i class="menu-icon fa fa-table"></i>Statistiques</a>                    </li>
+
+                    <!--CHTOUROU PART -->
+                            
+                            <ul class="nav navbar-nav">
                     <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Client</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Blogs</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><a href="ajouterclient2.php">Ajouter un client</a></li>
-                            <li><a href="afficherclient.php">Afficher liste des clients</a></li>
-                            <li><a href="modifierclient3.php">Modifier un client</a></li>
-                        </ul>
-                    </li>
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Cartes de fidélité</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><a href="ajoutercarte3.php">Ajouter une carte</a></li>
-                            <li><a href="affichercarte.php">Afficher les cartes</a></li>
-                            <li><a href="modifiercarte3.php">Modifier une carte</a></li>
-                            <li><a href="stat.php">Statistiques</a></li>
+                            <li><i class="fa fa-puzzle-piece"></i><a href="addAdvertisement.html">Add Blog</a></li>
+                            <li><i class="fa fa-id-badge"></i><a href="updatead.php">Show Blogs</a></li>
 
                         </ul>
                     </li>
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Testimonials</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-table"></i><a href="addTestimonial.html">Add Testimonial</a></li>
+                            <li><i class="fa fa-table"></i><a href="updateTestimonial.php">Update Testimonial</a></li>
+                            
+                        </ul>
+                    </li>
+                         <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Advertisements</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-table"></i><a href="addPublicite.html">Add Advertisement</a></li>
+                            <li><i class="fa fa-table"></i><a href="updatePub.php">Update Advertisement</a></li>
+                            
+                        </ul>
+                    </li>
+                    
+                    
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Gestion livraison</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-table"></i><a href="a.php">livraison</a></li>
+                            <li><i class="fa fa-table"></i><a href="c.php">livreurs</a></li>
+                            
+                        </ul>
+                    </li>
+                    
+       <li >
+        <a href="b.php"> <i class="menu-icon fa fa-table"></i>Gestion Réclamations</a>                    </li>
+        <a href="category.php"> <i class="menu-icon fa fa-table"></i>Gestion Catégorie</a>                    </li>
 
+                    
+                    
+                    
                 </ul>
+                <!--CHTOUROU PART -->
+                
             </div><!-- /.navbar-collapse -->
         </nav>
     </aside>
+
     <!-- Left Panel -->
 
     <!-- Right Panel -->
 
-    <div id="right-panel" class="right-panel">
+  <div id="right-panel" class="right-panel">
 
         <!-- Header-->
         <header id="header" class="header">
@@ -216,7 +257,7 @@ $list=$client1C->afficherclients();
             <div class="col-sm-4">
                 <div class="page-header float-left">
                     <div class="page-title">
-                        <h1>Dashboard</h1>
+                        <h1>reclamations</h1>
                     </div>
                 </div>
             </div>
@@ -224,75 +265,67 @@ $list=$client1C->afficherclients();
                 <div class="page-header float-right">
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
-                            <li><a href="#">Dashboard</a></li>
+                            
                             <li><a href="#">Table</a></li>
-                            <li class="active">Data table</li>
+                            <li class="active">reclamations</li>
                         </ol>
                     </div>
                 </div>
             </div>
         </div>
 
-       
         <div class="content mt-3">
             <div class="animated fadeIn">
                 <div class="row">
+
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                        
-                                <strong class="panel-title">Modifier un client</strong>
+                                <strong class="card-title">Data Table</strong>
                             </div>
                             <div class="card-body">
+                                <form method="POST">
+<table>
+<caption>Modifier reclamation</caption>
+<tr>
+<td>id_rec</td>
+<td><?PHP echo $row['id_rec']; ?></td>
+</tr>
+<tr>
+<td>nature</td>
+<td><input type="text" name="nature" value="<?PHP echo $nature ?>"></td>
+</tr>
+<tr>
+<td>description</td>
+<td><input type="text" name="description" value="<?PHP echo $description ?>"></td>
+</tr>
 
-                                    <form method="POST" action="modifierclient.php">
-                                    <div class="panel-body">
-                                        <div class="form-group">
-                                            <div class="validation-message">
-                                            <ul></ul>
-                                        </div>
-                                        
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">Modifier<span class="required">*</span></label>
-                                            <div class="col-sm-9">
-                                                <select name="modwith" onchange="ModifSelect()" id="selectmodif">
-                                                <option>Please select .. </option>
-                                                <option value="login">login</option>
-                                                <option value="email">email</option>
+<td><input type="submit" name="modifier" value="modifier"></td>
+</tr>
+<tr>
+<td></td>
+<td><input type="hidden" name="id_rec_ini" value="<?PHP echo $_GET['id_rec'];?>"></td>
+</tr>
+</table>
+</form>
+<?PHP
+	}
+}
+if (isset($_POST['modifier'])){
+	$reclamation=new reclamation($_POST['id_rec'],$_POST['nature'],$_POST['description']);
+	$reclamationC->modifierreclamation($reclamation,$_POST['id_rec_ini']);
+	echo $_POST['id_rec_ini'];
+?>
+<script>
+	location.replace("b.php");
+</script>
+<?php
+}
+?>
+                            </div>
+                        </div>
+                    </div>
 
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">client reference  <span class="required">*</span></label>
-                                            <div class="col-sm-9">
-                                            <input type="text" name="ref" class="form-control" title="Plase enter the refrence." placeholder="the refrence is .." required="">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">new<span class="required">*</span></label>
-                                            <div class="col-sm-9">
-                                            <input type="text" name="new" class="form-control" title="Plase enter the new value.." placeholder="the new  value is .." required="">
-                                            </div>
-                                        </div>
-                                        
-                                        </div>
-                                        
-                                    </div>
-                                    <footer class="panel-footer">
-                                        <div class="row">
-                                            <div class="col-sm-9 col-sm-offset-3">
-                                                <button class="btn btn-primary">Modify</button>
-                                                <button type="reset" class="btn btn-default">Reset</button>
-                                            </div>
-                                        </div>
-                                    </footer>
-                                </section>
-                            </form>
-                           
-                        
-                    <!-- end: page -->
-                </section>
 
                 </div>
             </div><!-- .animated -->
