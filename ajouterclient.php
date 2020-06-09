@@ -1,6 +1,5 @@
 <?PHP
 include "../Cores/clientC.php";
-use PHPMailer\PHPMailer\PHPMailer;
 
 
 echo ("page test");
@@ -18,69 +17,12 @@ if (
 
 		$client1C = new clientC();
 		$client1C->ajouterclient($client1);
-		header('Location: afficherclient.php');
-		 }
+		header('Location: signin.html');
+	}	
     else {echo "vérifier les champs";}
 	
-} else {
+} 
+else {
 	echo "vérifier les champs";
 }
 //*/
-/*if ($Execute) {
-        //-----------------------------------------------------------mail-------------------
-
-
-        require "PHPMailer/src/PHPMailer.php";
-        require "PHPMailer/src/SMTP.php";
-        require "PHPMailer/src/Exception.php";
-
-
-
-        //create an instance of the PHPMailer
-        $mail = new PHPMailer;
-        //set a host
-        $mail->Host = "smtp.gmail.com";
-        $mail->SMTPDebug = 3;
-        //enable smtp
-        $mail->isSMTP();
-        //set authetication to true
-        $mail->SMTPAuth = true;
-
-        //set login details for Gmail account
-        $mail->Username = "elyes.ghrairi@esprit.tn";
-        $mail->Password = "181JMT1844";
-
-        //set type protection
-        $mail->SMTPSecure = "ssl"; //or we can use TLS
-
-        //set a port
-        $mail->Port = 465; // or 587 if TLS
-        //set who is sending an email
-        $mail->setFrom("elyes.ghrairi@esprit.tn", "moula site");
-
-        //set where we are sending email(reciepent)
-        $mail->addAddress($email);
-
-        //set html t
-        $mail->isHTML(true);
-        //set a subject
-        $mail->Subject = "hello " . $mdp;
-        //set body
-        $mail->Body = "you are now part of the family <3 
- sincerely athome administration
- ";
-
-        //add attachment
-        //$mail->addAttachment("../annap/img/anna.jpg" , "annap");
-
-        if ($mail->send()) {
-            echo "email is sent";
-            header('Location: index.php');
-
-        } else {
-            echo "something wrong happened " . $mail->ErrorInfo;;
-        }
-
-
-        echo "<script>window.open('index.php?id=registerSucceed','_self')</script>";
-    }
